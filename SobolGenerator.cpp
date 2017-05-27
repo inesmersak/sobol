@@ -6,7 +6,7 @@
 
 using namespace std;
 
-SobolGenerator::SobolGenerator(int dimension, bool dbg_msg) {
+SobolGenerator::SobolGenerator(unsigned dimension, unsigned m = 100, bool gcode = true, bool dbg_msg=false) {
     /*
      * The constructor for the SobolGenerator object. Initialises the vectors for direction integers and polynomials.
      *
@@ -16,6 +16,8 @@ SobolGenerator::SobolGenerator(int dimension, bool dbg_msg) {
      */
     dim = dimension;
     draw = 0;
+    discard = m;
+    gray_code = gcode;
     debug = dbg_msg;
 
     // initialisations
@@ -41,8 +43,8 @@ SobolGenerator::~SobolGenerator() {
     }
 }
 
-int SobolGenerator::gamma() {
-    return draw;
+bitset<SobolGenerator::bits> SobolGenerator::gamma() {
+    return bitset<bits>(draw);
 }
 
 void SobolGenerator::read_direction_integers(string filename) {
@@ -78,7 +80,7 @@ void SobolGenerator::read_direction_integers(string filename) {
     inpfile.close();
 }
 
-int SobolGenerator::get_next() {
+vector<unsigned> SobolGenerator::get_next() {
     /*
      * Gets the next vector in the draw.
      */
@@ -90,13 +92,42 @@ int SobolGenerator::get_next() {
         }
         catch (const ios_base::failure& failmsg) {
             cerr << failmsg.what() << endl;
-            return -1;
+            return vector<unsigned>(dim-1,0);
         }
         calculate_dimension_integers();
     }
-
-    ++draw;
-    return 0;
+    vector<unsigned> numbers;
+    do {
+        numbers.clear();
+        if (!gray_code) {
+            for(int k=0; k < dim; ++k) {
+                if (draw < discard) break;
+                bitset<bits> gam = gamma();
+                bitset<bits> num;
+                for(int j=0; j < bits; ++j) {
+                    if (gam.none()) break;
+                    if (gam[0]) {
+                        num ^= dir_int[k][j];
+                    }
+                    gam >>= 1;
+                }
+                numbers.push_back(static_cast<unsigned>(num.to_ulong()));
+            }
+        } else {
+            for (int k=0; k < dim; ++k) {
+                if (draw == 0) {
+                    numbers.push_back(0);
+                } else {
+                    int bit = bit_gray_code();
+                    numbers.push_back(static_cast<unsigned> ((bitset<bits>(previous_draw[k]) ^ dir_int[k][bit]).to_ulong
+                            ()));
+                }
+            }
+            previous_draw = numbers;
+        }
+        ++draw;
+    } while (draw <= discard);
+    return numbers;
 }
 
 ostream& operator<<(ostream& output, const SobolGenerator& Sob) {
@@ -137,4 +168,13 @@ void SobolGenerator::calculate_dimension_integers() {
             dir_int[k].push_back(v);
         }
     }
+}
+
+int SobolGenerator::bit_gray_code(void) {
+    bitset<bits> n(draw-1);
+    int i;
+    for(i=0; i < bits; ++i) {
+        if (n[i]) break;
+    }
+    return i;
 }

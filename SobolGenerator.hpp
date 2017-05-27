@@ -9,24 +9,29 @@
 using namespace std;
 
 class SobolGenerator {
-private:
+public:
     const static int bits = 32;
-    int dim;
-    int draw;
+private:
+    unsigned dim;
+    unsigned draw;
+    unsigned discard;
     vector< vector< bitset<bits> >> dir_int;
     vector< pair<unsigned, bitset<bits> >> polynomial;
+    vector<unsigned> previous_draw;
+    bool gray_code;
     bool debug;
     void set_first_dimension();
-    void read_direction_integers(std::string filename);
-    int gamma();
-    void calculate_dimension_integers();
+    void read_direction_integers(std::string);
+    bitset<bits> gamma(void);
+    int bit_gray_code(void);
+    void calculate_dimension_integers(void);
 public:
     // constructor
-    SobolGenerator(int dimension, bool dbg_msg);
+    SobolGenerator(unsigned, unsigned, bool, bool);
     // destructor
-    ~SobolGenerator();
-    friend ostream& operator<<(ostream& output, const SobolGenerator& Sob);
-    int get_next();
+    ~SobolGenerator(void);
+    friend ostream& operator<<(ostream&, const SobolGenerator&);
+    vector<unsigned> get_next(void);
 };
 
 
