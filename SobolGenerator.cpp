@@ -44,6 +44,9 @@ SobolGenerator::~SobolGenerator() {
 }
 
 bitset<SobolGenerator::bits> SobolGenerator::gamma() {
+    /*
+     * Returns the number of the current draw represented with a bitset.
+     */
     return bitset<bits>(draw);
 }
 
@@ -82,7 +85,11 @@ void SobolGenerator::read_direction_integers(string filename) {
 
 vector<unsigned> SobolGenerator::get_next() {
     /*
-     * Gets the next vector in the draw.
+     * Generates the next vector in the sequence.
+     *
+     * Output:
+     * numbers - Represents the next vector. If there is an I/O error, the vector returned is of length dim-1 with
+     * every element being 0.
      */
     if (draw == 0) {
         set_first_dimension();
@@ -131,6 +138,9 @@ vector<unsigned> SobolGenerator::get_next() {
 }
 
 ostream& operator<<(ostream& output, const SobolGenerator& Sob) {
+    /*
+     * Output operator for the SobolGenerator object.
+     */
     for(int i = 0; i < Sob.dim; ++i) {
         output << "dim " << i+1 << ": " << endl;
         output << "direction integers: ";
@@ -145,11 +155,19 @@ ostream& operator<<(ostream& output, const SobolGenerator& Sob) {
 }
 
 void SobolGenerator::set_first_dimension() {
+    /*
+     * Sets the properties of the primitive polynomial for the first dimension, due to it not being included in the
+     * file 'direction_integers.txt'.
+     */
     polynomial[0].first = 0;
     polynomial[0].second = bitset<bits>(0);
 }
 
 void SobolGenerator::calculate_dimension_integers() {
+    /*
+     * Calculates the rest of the dimension integers for all dimensions based on the initialisation numbers using the
+     * recurrence relation set by the primitive polynomial for this dimension.
+     */
     for(int k = 0; k < dim; ++k) {
         unsigned pdeg = polynomial[k].first;
         for(unsigned l = pdeg; l < bits; ++l) {
@@ -171,6 +189,10 @@ void SobolGenerator::calculate_dimension_integers() {
 }
 
 int SobolGenerator::bit_gray_code(void) {
+    /*
+     * Returns which bit in the gray code has changed compared to the previous draw. The bit that changes is the
+     * first nonzero bit in the number of the previous draw, counted from the right.
+     */
     bitset<bits> n(draw-1);
     int i;
     for(i=0; i < bits; ++i) {
