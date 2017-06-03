@@ -63,7 +63,7 @@ void SobolGenerator::read_direction_integers(string filename) {
     if (!inpfile.is_open()) {
         throw ios_base::failure("Cannot open file with direction integers");
     }
-    inpfile.ignore(numeric_limits<streamsize>::max(), '\n');
+    inpfile.ignore(numeric_limits<streamsize>::max(), '\n'); // we ignore the first (non-numeric) line in the file
     int d;
     unsigned s, a;
     for(int i = 2; i <= dim; ++i) {
@@ -188,7 +188,7 @@ void SobolGenerator::calculate_dimension_integers() {
     }
 }
 
-int SobolGenerator::bit_gray_code(void) {
+int SobolGenerator::bit_gray_code() {
     /*
      * Returns which bit in the gray code has changed compared to the previous draw. The bit that changes is the
      * first nonzero bit in the number of the previous draw, counted from the right.

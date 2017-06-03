@@ -10,28 +10,29 @@ using namespace std;
 
 class SobolGenerator {
 public:
-    const static int bits = 32;
+    const static int bits = 32; // how many bits in an integer
 private:
-    unsigned dim;
-    unsigned draw;
-    unsigned discard;
-    vector< vector< bitset<bits> >> dir_int;
-    vector< pair<unsigned, bitset<bits> >> polynomial;
-    vector<unsigned> previous_draw;
-    bool gray_code;
-    bool debug;
-    void set_first_dimension();
+    unsigned dim;  // number of dimensions to be generated each draw
+    unsigned draw;  // number of the draw
+    unsigned discard;  // how many of the generated vectors to discard in the next draw
+    vector< vector< bitset<bits> >> dir_int;  // vector containing direction numbers for each dimension
+    vector< pair<unsigned, bitset<bits> >> polynomial;  // vector containing primitive polynomial modulo 2 for each
+    // dimension
+    vector<unsigned> previous_draw;  // vector containing the previous draw
+    bool gray_code;  // determines whether to use gray code
+    bool debug;  // determines whether to print debug messages
     void read_direction_integers(std::string);
-    bitset<bits> gamma(void);
-    int bit_gray_code(void);
-    void calculate_dimension_integers(void);
+    void set_first_dimension();
+    void calculate_dimension_integers();
+    bitset<bits> gamma();
+    int bit_gray_code();
 public:
     // constructor
     SobolGenerator(unsigned, unsigned, bool, bool);
     // destructor
-    ~SobolGenerator(void);
+    ~SobolGenerator();
     friend ostream& operator<<(ostream&, const SobolGenerator&);
-    vector<unsigned> get_next(void);
+    vector<unsigned> get_next();
 };
 
 
