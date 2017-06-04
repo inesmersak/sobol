@@ -83,7 +83,7 @@ void SobolGenerator::read_direction_integers(string filename) {
     inpfile.close();
 }
 
-vector<unsigned> SobolGenerator::get_next() {
+vector<double> SobolGenerator::get_next() {
     /*
      * Generates the next vector in the sequence.
      *
@@ -99,7 +99,7 @@ vector<unsigned> SobolGenerator::get_next() {
         }
         catch (const ios_base::failure& failmsg) {
             cerr << failmsg.what() << endl;
-            return vector<unsigned>(dim-1,0);
+            return vector<double>(0);
         }
         calculate_dimension_integers();
     }
@@ -134,7 +134,11 @@ vector<unsigned> SobolGenerator::get_next() {
         }
         ++draw;
     } while (draw <= discard);
-    return numbers;
+    vector<double> final_numbers(dim);
+    for (int i=0; i < dim; ++i) {
+        final_numbers[i] = static_cast<double>(numbers[i]) / (1ull << bits);
+    }
+    return final_numbers;
 }
 
 ostream& operator<<(ostream& output, const SobolGenerator& Sob) {
@@ -191,12 +195,12 @@ void SobolGenerator::calculate_dimension_integers() {
 int SobolGenerator::bit_gray_code() {
     /*
      * Returns which bit in the gray code has changed compared to the previous draw. The bit that changes is the
-     * first nonzero bit in the number of the previous draw, counted from the right.
+     * first zero bit in the number of the previous draw, counted from the right.
      */
     bitset<bits> n(draw-1);
     int i;
     for(i=0; i < bits; ++i) {
-        if (n[i]) break;
+        if (!n[i]) break;
     }
     return i;
 }

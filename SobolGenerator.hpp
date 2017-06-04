@@ -32,7 +32,7 @@ public:
     // destructor
     ~SobolGenerator();
     friend ostream& operator<<(ostream&, const SobolGenerator&);
-    vector<unsigned> get_next();
+    vector<double> get_next();
 };
 
 
