@@ -1,4 +1,4 @@
-filename = 'out3';
+filename = '2dvectors';
 delimiterIn = ' ';
 headerlinesIn = 0;
 A = importdata(filename,delimiterIn,headerlinesIn);
