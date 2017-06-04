@@ -20,6 +20,9 @@ SobolGenerator::SobolGenerator(unsigned dimension, unsigned m = 100, bool gcode 
     gray_code = gcode;
     debug = dbg_msg;
 
+    dir_int.reserve(dim);
+    polynomial.reserve(dim);
+
     // initialisations
     for (int i=0; i < dim; ++i) {
         vector< bitset<bits> > i_dim;
@@ -103,9 +106,8 @@ vector<double> SobolGenerator::get_next() {
         }
         calculate_dimension_integers();
     }
-    vector<unsigned> numbers;
+    vector<unsigned> numbers(dim);
     do {
-        numbers.clear();
         if (!gray_code) {
             for(int k=0; k < dim; ++k) {
                 if (draw < discard) break;
@@ -118,16 +120,15 @@ vector<double> SobolGenerator::get_next() {
                     }
                     gam >>= 1;
                 }
-                numbers.push_back(static_cast<unsigned>(num.to_ulong()));
+                numbers[k] = static_cast<unsigned>(num.to_ulong());
             }
         } else {
             for (int k=0; k < dim; ++k) {
                 if (draw == 0) {
-                    numbers.push_back(0);
+                    numbers[k] = 0;
                 } else {
                     int bit = bit_gray_code();
-                    numbers.push_back(static_cast<unsigned> ((bitset<bits>(previous_draw[k]) ^ dir_int[k][bit]).to_ulong
-                            ()));
+                    numbers[k] = static_cast<unsigned>( (bitset<bits>(previous_draw[k]) ^ dir_int[k][bit]).to_ulong() );
                 }
             }
             previous_draw = numbers;
