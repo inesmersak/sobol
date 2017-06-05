@@ -10,8 +10,12 @@ data = A(:,2);
 fit = polyfit(log(N'),log(data),1);
 linfun = @(x) exp(fit(2)) * x.^fit(1);
 
-loglog(N',data,'o-b',N',linfun(N'),'r')
+filename = 'time_4d_100mil_nogray';
+A = importdata(filename,delimiterIn,headerlinesIn);
+data_ng = A(:,2);
+
+loglog(N',data,'o-b', N',linfun(N'),'r--', N',data_ng,'g-x')
 grid on
 title('Time needed for generation of 4-dimensional vectors')
-legend('time measured in seconds','fitted linear func, coefficient 0.8721')
+legend('using gray code','fitted linear func, coefficient 0.8721', 'not using gray code')
 legend('Location','northwest')
