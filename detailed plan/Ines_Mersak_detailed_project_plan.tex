@@ -1,0 +1,44 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[slovene]{babel}
+\usepackage{lmodern}
+
+\usepackage{amsmath,amssymb}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage{parskip}
+\usepackage[
+paper=a4paper,
+top=2.5cm,
+bottom=2.5cm,
+left=2.5cm,
+right=2.5cm
+]{geometry}  % velikost strani
+
+\title{Quasi-random number generator}
+\author{Proposer / mentor: Dejan Velušček}
+\date{}
+
+\begin{document}
+\maketitle
+
+The goal of this project is to implement the Sobol quasi random number generator, test and analyse it using simple Monte Carlo examples, and compare the results with the built-in random number generators as well as the parallel Sobol quasi random number generator that my colleague will be implementing. 
+
+I will be using C++ to implement the quasi random number generator.
+
+Tasks already completed: 
+\begin{itemize}
+    \item Meet with the proposer / mentor. (completed 10.~3.~2017)
+\end{itemize}
+
+Main project tasks (yet to be completed):
+\begin{itemize}
+    \item Research the construction of Sobol' numbers using this source: \\P. Jäckel: Monte Carlo Methods in Finance, Wiley, 2002, pages 80--88. (end of March)
+    \item Familiarise myself with C++. (first week of April)
+    \item Implement the quasi random number generator. (end of April)
+    \item Test the quasi random number generator with Monte Carlo integration and compare the results to using built-in C function \texttt{rand} from \texttt{stdlib} library. (second week of May)
+    \item Compare the results (error, computation time) with the parallel quasi number generator. (end of May)
+\end{itemize}
+
+\end{document}
