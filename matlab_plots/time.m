@@ -14,8 +14,10 @@ filename = 'time_4d_100mil_nogray';
 A = importdata(filename,delimiterIn,headerlinesIn);
 data_ng = A(:,2);
 
-loglog(N',data,'o-b', N',linfun(N'),'r--', N',data_ng,'g-x')
+loglog(N',data,'o-b', N',data_ng,'g-x', N',linfun(N'),'r--')
 grid on
 title('Time needed for generation of 4-dimensional vectors')
-legend('using gray code','fitted linear func, coefficient 0.8721', 'not using gray code')
+xlabel('Number of vectors')
+ylabel('Time in seconds')
+legend('using gray code', 'not using gray code', 'trend line for gray code, coefficient 0.8721')
 legend('Location','northwest')

@@ -12,6 +12,8 @@ SobolGenerator::SobolGenerator(unsigned dimension, unsigned m = 100, bool gcode 
      *
      * Input:
      * dimension - Represents how many dimensions we want to generate with each draw.
+     * m - The first m vectors are to be discarded.
+     * gcode - If this boolean is set to true, gray code will be used to generate vectors.
      * dbg_msg - If this boolean is set to true, debug messages will print to the console.
      */
     dim = dimension;

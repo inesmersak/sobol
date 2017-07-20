@@ -18,6 +18,8 @@ linfunp = @(x) exp(fitp(2)) * x.^fitp(1);
 loglog(N',data(:,1),'o-b', N',linfunq(N'),'g--', N',data(:,2),'x-r', N',linfunp(N'),'m--')
 grid on
 title('Relative error of approximation for function x+y')
+xlabel('Number of samples')
+ylabel('Relative error')
 legend('quasi-random','trend line for quasi, coefficient -0.9170', 'pseudo-random', 'trend line for pseudo, coefficient -0.5130')
 
 % sin(10*x^2 (1 - y))
@@ -36,5 +38,7 @@ clf
 loglog(N',data(:,1),'o-b', N',linfunq(N'),'g--', N',data(:,2),'x-r', N',linfunp(N'),'m--')
 grid on
 title('Relative error of approximation for function sin(10*x^2 (1 - y))')
+xlabel('Number of samples')
+ylabel('Relative error')
 legend('quasi-random','trend line for quasi, coefficient -0.9474', 'pseudo-random', 'trend line for pseudo, coefficient -0.5240');
 
